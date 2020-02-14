@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  heimdall:
-    image: linuxserver/heimdall:latest
-    container_name: heimdall
-    environment:
-      - PUID=1001
-      - PGID=1001
-      - TZ=Asia/Kolkata
-    volumes:
-      - ./config:/config
-    ports:
-      - 80:80
-    restart: unless-stopped
+    heimdall:
+        image: linuxserver/heimdall:latest
+        container_name: heimdall
+        environment:
+            - PUID=1001
+            - PGID=1001
+            - TZ=Asia/Kolkata
+        volumes:
+            - ./config:/config
+        ports:
+            - 80:80
+        restart: unless-stopped

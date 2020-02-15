@@ -13,3 +13,9 @@ services:
         ports:
             - 80:80
         restart: unless-stopped
+        networks:
+            - phantom-net
+
+networks:
+    phantom-net:
+        external: true

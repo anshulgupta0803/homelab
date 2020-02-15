@@ -23,3 +23,9 @@ services:
         restart: unless-stopped
         env_file:
               - pihole.env
+        networks:
+            - phantom-net
+
+networks:
+    phantom-net:
+        external: true

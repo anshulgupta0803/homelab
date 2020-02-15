@@ -5,8 +5,8 @@ services:
         image: linuxserver/heimdall:latest
         container_name: heimdall
         environment:
-            - PUID=1001
-            - PGID=1001
+            - PUID=1000
+            - PGID=1000
             - TZ=Asia/Kolkata
         volumes:
             - ./config:/config

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  lidarr:
+    image: linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Asia/Kolkata
+        - UMASK_SET=022
+    volumes:
+        - ./config:/config
+        - ./music:/music
+        - ./downloads:/downloads
+    expose:
+        - '8686'
+    ports:
+        - '8687:8686'
+    restart: unless-stopped
+    networks:
+        - phantom-net
+
+networks:
+    phantom-net:
+        external: true

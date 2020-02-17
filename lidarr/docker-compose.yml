@@ -15,8 +15,6 @@ services:
         - ./downloads:/downloads
     expose:
         - '8686'
-    ports:
-        - '8687:8686'
     restart: unless-stopped
     networks:
         - phantom-net

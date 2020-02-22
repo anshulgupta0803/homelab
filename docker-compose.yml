@@ -1,0 +1,128 @@
+version: '3'
+
+services:
+    nginx:
+        container_name: nginx
+        image: nginx:latest
+        restart: always
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./nginx/tilde-enhanced:/etc/nginx/html/:ro
+        ports:
+            - '80:80'
+        depends_on:
+            - portainer
+            - pihole
+            - lidarr
+            - heimdall
+            - deluge
+            - code
+        networks:
+            - phantom-net
+
+    portainer:
+        container_name: portainer
+        image: portainer/portainer:latest
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./portainer/data:/data
+        expose:
+            - '8000'
+            - '9000'
+        networks:
+            - phantom-net
+
+    pihole:
+        container_name: pihole
+        image: pihole/pihole:latest
+        restart: always
+        volumes:
+            - './pihole/etc-pihole/:/etc/pihole/'
+            - './pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+        ports:
+            - '53:53/tcp'
+            - '53:53/udp'
+            - '67:67/udp'
+        expose:
+            - '80'
+        environment:
+            - TZ=Asia/Kolkata
+        env_file:
+            - ./pihole/pihole.env
+        dns:
+            - 127.0.0.1
+            - 1.1.1.1
+        cap_add:
+            - NET_ADMIN
+        networks:
+            - phantom-net
+
+    lidarr:
+        container_name: lidarr
+        image: linuxserver/lidarr:latest
+        restart: always
+        volumes:
+            - ./lidarr/config:/config
+            - ./lidarr/music:/music
+            - ./lidarr/downloads:/downloads
+        expose:
+            - '8686'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+            - UMASK_SET=022
+        networks:
+            - phantom-net
+
+    heimdall:
+        container_name: heimdall
+        image: linuxserver/heimdall:latest
+        restart: always
+        volumes:
+            - ./heimdall/config:/config
+        expose:
+            - '80'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+        networks:
+            - phantom-net
+
+    deluge:
+        container_name: deluge
+        image: linuxserver/deluge:latest
+        restart: always
+        volumes:
+            - ./deluge/config:/config
+            - $HOME/storage/deluge/downloads:/downloads # Edit the Download directory in Preferences
+        expose:
+            - '8112'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+            - UMASK_SET=022
+            - DELUGE_LOGLEVEL=error
+        networks:
+            - phantom-net
+
+    code:
+        container_name: code
+        image: codercom/code-server:arm64
+        restart: always
+        volumes:
+            - ./code/project:/home/coder/project
+        expose:
+            - '8080'
+        env_file:
+            - ./code/code.env
+        command: --base-path /code
+        networks:
+            - phantom-net
+
+networks:
+    phantom-net:
+        external: true

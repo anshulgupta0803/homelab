@@ -14,7 +14,7 @@ services:
       - DELUGE_LOGLEVEL=error
     volumes:
       - ./config:/config
-      - ./downloads:/downloads # Edit the Download directory in Preferences
+      - $HOME/storage/deluge/downloads:/downloads # Edit the Download directory in Preferences
     restart: unless-stopped
     networks:
         - phantom-net

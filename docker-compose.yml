@@ -18,6 +18,8 @@ services:
             - deluge
             - code
             - emby
+            - radarr
+            - sonarr
         networks:
             - phantom-net
 
@@ -138,6 +140,42 @@ services:
             - UID=1000
             - GID=1000
             - GIDLIST=1000
+        networks:
+            - phantom-net
+
+    radarr:
+        container_name: radarr
+        image: linuxserver/radarr:latest
+        restart: always
+        volumes:
+            - $HOME/storage/radarr/config:/config
+            - $HOME/storage/radarr/movies:/movies
+            - $HOME/storage/deluge/downloads:/downloads
+        expose:
+            - '7878'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+            - UMASK_SET=022
+        networks:
+            - phantom-net
+
+    sonarr:
+        container_name: sonarr
+        image: linuxserver/sonarr
+        restart: always
+        volumes:
+            - $HOME/storage/sonarr/config:/config
+            - $HOME/storage/sonarr/tv:/tv
+            - $HOME/storage/deluge/downloads:/downloads
+        expose:
+            - '8989'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kolkata
+            - UMASK_SET=022
         networks:
             - phantom-net
 

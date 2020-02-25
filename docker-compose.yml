@@ -118,6 +118,8 @@ services:
         expose:
             - '8096'
             - '8920'
+        ports:
+            - '8096:8096'
         environment:
             - UID=1000
             - GID=1000

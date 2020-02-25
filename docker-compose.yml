@@ -113,7 +113,8 @@ services:
         restart: always
         volumes:
             - $HOME/storage/emby/config:/config
-            - $HOME/storage/deluge/downloads:/mnt/share1
+            - $HOME/storage/movies:/movies
+            - $HOME/storage/tv:/tv
         expose:
             - '8096'
             - '8920'
@@ -130,8 +131,7 @@ services:
         restart: always
         volumes:
             - $HOME/storage/radarr/config:/config
-            - $HOME/storage/radarr/movies:/movies
-            - $HOME/storage/deluge/downloads:/downloads
+            - $HOME/storage/movies:/movies
         expose:
             - '7878'
         environment:
@@ -144,12 +144,11 @@ services:
 
     sonarr:
         container_name: sonarr
-        image: linuxserver/sonarr
+        image: linuxserver/sonarr:latest
         restart: always
         volumes:
             - $HOME/storage/sonarr/config:/config
-            - $HOME/storage/sonarr/tv:/tv
-            - $HOME/storage/deluge/downloads:/downloads
+            - $HOME/storage/tv:/tv
         expose:
             - '8989'
         environment:

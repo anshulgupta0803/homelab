@@ -13,7 +13,6 @@ services:
         depends_on:
             - portainer
             - pihole
-            - lidarr
             - heimdall
             - deluge
             - code

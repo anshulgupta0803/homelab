@@ -61,24 +61,6 @@ services:
         networks:
             - phantom-net
 
-    lidarr:
-        container_name: lidarr
-        image: linuxserver/lidarr:latest
-        restart: always
-        volumes:
-            - ./lidarr/config:/config
-            - ./lidarr/music:/music
-            - ./lidarr/downloads:/downloads
-        expose:
-            - '8686'
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=Asia/Kolkata
-            - UMASK_SET=022
-        networks:
-            - phantom-net
-
     heimdall:
         container_name: heimdall
         image: linuxserver/heimdall:latest

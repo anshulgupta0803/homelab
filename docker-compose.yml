@@ -32,6 +32,8 @@ services:
         expose:
             - '8000'
             - '9000'
+        ports:
+            - '9000:9000'
         networks:
             - phantom-net
 

@@ -7,7 +7,6 @@ services:
         restart: always
         volumes:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-            - ./nginx/tilde-enhanced:/etc/nginx/html/:ro
         ports:
             - '80:80'
         depends_on:
@@ -28,7 +27,7 @@ services:
         restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./portainer/data:/data
+            - ${STORAGE}/homelab/portainer/data:/data
         expose:
             - '8000'
             - '9000'
@@ -42,8 +41,8 @@ services:
         image: pihole/pihole:latest
         restart: always
         volumes:
-            - './pihole/etc-pihole/:/etc/pihole/'
-            - './pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+            - '${STORAGE}/homelab/pihole/etc-pihole/:/etc/pihole/'
+            - '${STORAGE}/homelab/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
         ports:
             - '53:53/tcp'
             - '53:53/udp'
@@ -67,7 +66,7 @@ services:
         image: linuxserver/heimdall:latest
         restart: always
         volumes:
-            - ./heimdall/config:/config
+            - ${STORAGE}/homelab/heimdall/config:/config
         expose:
             - '80'
         environment:
@@ -82,8 +81,8 @@ services:
         image: linuxserver/deluge:latest
         restart: always
         volumes:
-            - ./deluge/config:/config
-            - $HOME/storage/deluge/downloads:/downloads # Edit the Download directory in Preferences
+            - ${STORAGE}/homelab/deluge/config:/config
+            - ${STORAGE}/homelab/deluge/downloads:/downloads # Edit the Download directory in Preferences
         expose:
             - '8112'
         environment:
@@ -100,12 +99,12 @@ services:
         image: codercom/code-server:arm64
         restart: always
         volumes:
-            - ./code/project:/home/coder/project
+            - ${STORAGE}/homelab/code/project:/home/coder/project
         expose:
             - '8080'
         env_file:
             - ./code/code.env
-        command: --base-path /code
+        # command: --base-path /code
         networks:
             - phantom-net
 
@@ -114,9 +113,9 @@ services:
         image: emby/embyserver_arm64v8:latest
         restart: always
         volumes:
-            - $HOME/storage/emby/config:/config
-            - $HOME/storage/movies:/movies
-            - $HOME/storage/tv:/tv
+            - ${STORAGE}/homelab/emby/config:/config
+            - ${STORAGE}/movies:/movies
+            - ${STORAGE}/tv:/tv
         expose:
             - '8096'
             - '8920'
@@ -134,8 +133,8 @@ services:
         image: linuxserver/radarr:latest
         restart: always
         volumes:
-            - $HOME/storage/radarr/config:/config
-            - $HOME/storage/movies:/movies
+            - ${STORAGE}/homelab/radarr/config:/config
+            - ${STORAGE}/movies:/movies
         expose:
             - '7878'
         environment:
@@ -151,8 +150,8 @@ services:
         image: linuxserver/sonarr:latest
         restart: always
         volumes:
-            - $HOME/storage/sonarr/config:/config
-            - $HOME/storage/tv:/tv
+            - ${STORAGE}/homelab/sonarr/config:/config
+            - ${STORAGE}/tv:/tv
         expose:
             - '8989'
         environment:

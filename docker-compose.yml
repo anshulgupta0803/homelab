@@ -58,6 +58,7 @@ services:
             - 1.1.1.1
         cap_add:
             - NET_ADMIN
+        privileged: true
         networks:
             - phantom-net
 
@@ -66,7 +67,7 @@ services:
         image: linuxserver/heimdall:latest
         restart: always
         volumes:
-            - ${STORAGE}/homelab/heimdall/config:/config
+            - ./heimdall/config:/config # Issue with heimdall of UID=0
         expose:
             - '80'
         environment:
@@ -86,8 +87,8 @@ services:
         expose:
             - '8112'
         environment:
-            - PUID=1000
-            - PGID=1000
+            - PUID=0
+            - PGID=0
             - TZ=Asia/Kolkata
             - UMASK_SET=022
             - DELUGE_LOGLEVEL=error
@@ -104,7 +105,7 @@ services:
             - '8080'
         env_file:
             - ./code/code.env
-        # command: --base-path /code
+        command: --base-path /code
         networks:
             - phantom-net
 
@@ -138,8 +139,8 @@ services:
         expose:
             - '7878'
         environment:
-            - PUID=1000
-            - PGID=1000
+            - PUID=0
+            - PGID=0
             - TZ=Asia/Kolkata
             - UMASK_SET=022
         networks:
@@ -155,8 +156,8 @@ services:
         expose:
             - '8989'
         environment:
-            - PUID=1000
-            - PGID=1000
+            - PUID=0
+            - PGID=0
             - TZ=Asia/Kolkata
             - UMASK_SET=022
         networks:

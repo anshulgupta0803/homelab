@@ -18,6 +18,7 @@ services:
             - emby
             - radarr
             - sonarr
+            - speedtest
         networks:
             - phantom-net
 
@@ -148,6 +149,16 @@ services:
             - '8989'
         env_file:
             - ./linuxserver.env
+        networks:
+            - phantom-net
+
+    speedtest:
+        container_name: speedtest
+        image: speedtest:latest
+        build: ./speedtest
+        restart: unless-stopped
+        expose:
+            - '5000'
         networks:
             - phantom-net
 

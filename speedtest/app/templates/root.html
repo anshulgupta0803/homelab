@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Speedtest</title>
+    <link rel="stylesheet" type="text/css" href="static/root.css" />
+</head>
+
+<body>
+    <div class="center">
+        <button id="speedtest" class="button" onclick="run_speedtest()">Speedtest</button>
+        <table class="rwd-table">
+            <tr>
+                <th>ISP</th>
+                <th>Ping Latency</th>
+                <th>Download</th>
+                <th>Upload</th>
+                <th>Packet Loss</th>
+            </tr>
+            <tr>
+                <td data-th="ISP" id="isp">--</td>
+                <td data-th="Ping Latency" id="ping_latency">--</td>
+                <td data-th="Download" id="download">--</td>
+                <td data-th="Upload" id="upload">--</td>
+                <td data-th="Packet Loss" id="packet_loss">--</td>
+            </tr>
+        </table>
+    </div>
+    <script src="static/root.js"></script>
+</body>
+
+</html>

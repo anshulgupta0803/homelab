@@ -10,30 +10,9 @@ services:
         ports:
             - '80:80'
         depends_on:
-            - portainer
             - pihole
-            - heimdall
             - deluge
-            - code
-            - emby
             - radarr
-            - sonarr
-            - speedtest
-        networks:
-            - phantom-net
-
-    portainer:
-        container_name: portainer
-        image: portainer/portainer:latest
-        restart: always
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ${STORAGE}/homelab/portainer/data:/data
-        expose:
-            - '8000'
-            - '9000'
-        ports:
-            - '9000:9000'
         networks:
             - phantom-net
 
@@ -63,19 +42,6 @@ services:
         networks:
             - phantom-net
 
-    heimdall:
-        container_name: heimdall
-        image: linuxserver/heimdall:latest
-        restart: unless-stopped
-        volumes:
-            - ./heimdall/config:/config # Issue with heimdall of UID=0
-        expose:
-            - '80'
-        env_file:
-            - ./linuxserver.env
-        networks:
-            - phantom-net
-
     deluge:
         container_name: deluge
         image: linuxserver/deluge:latest
@@ -92,38 +58,6 @@ services:
         networks:
             - phantom-net
 
-    code:
-        container_name: code
-        image: linuxserver/code-server:latest
-        restart: unless-stopped
-        volumes:
-            - ${STORAGE}/homelab/code/project:/config
-        expose:
-            - '8443'
-        env_file:
-            - ./linuxserver.env
-            - ./code/code.env
-        # command: --base-path /code
-        networks:
-            - phantom-net
-
-    emby:
-        container_name: emby
-        image: linuxserver/emby:latest
-        restart: unless-stopped
-        volumes:
-            - ${STORAGE}/homelab/emby/config:/config
-            - ${STORAGE}/movies:/movies
-            - ${STORAGE}/tv:/tv
-        expose:
-            - '8096'
-        ports:
-            - '8096:8096'
-        env_file:
-            - ./linuxserver.env
-        networks:
-            - phantom-net
-
     radarr:
         container_name: radarr
         image: linuxserver/radarr:latest
@@ -131,6 +65,7 @@ services:
         volumes:
             - ${STORAGE}/homelab/radarr/config:/config
             - ${STORAGE}/movies:/movies
+            - ${STORAGE}/homelab/deluge/downloads:/downloads
         expose:
             - '7878'
         env_file:
@@ -138,27 +73,13 @@ services:
         networks:
             - phantom-net
 
-    sonarr:
-        container_name: sonarr
-        image: linuxserver/sonarr:latest
+    tor:
+        container_name: tor
+        build: ./tor
+        image: tor:latest
         restart: unless-stopped
-        volumes:
-            - ${STORAGE}/homelab/sonarr/config:/config
-            - ${STORAGE}/tv:/tv
-        expose:
-            - '8989'
-        env_file:
-            - ./linuxserver.env
-        networks:
-            - phantom-net
-
-    speedtest:
-        container_name: speedtest
-        image: speedtest:latest
-        build: ./speedtest
-        restart: unless-stopped
-        expose:
-            - '5000'
+        ports:
+                - '9050:9050'
         networks:
             - phantom-net
 
